@@ -13,9 +13,9 @@ module "vpc" {
 
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = "devops-eks"
-  cluster_version = "1.27"
-  subnets         = module.vpc.private_subnets
+  name    = "devops-eks"
+  kubernetes_version = "1.29"
+  subnet_ids         = module.vpc.private_subnets
   vpc_id          = module.vpc.vpc_id
 }
 
@@ -28,7 +28,7 @@ resource "aws_db_instance" "rds" {
   allocated_storage    = 20
   engine               = "mysql"
   instance_class       = "db.t3.micro"
-  name                 = "appdb"
+  db_name              = "appdb"
   username             = "admin"
   password             = "password123"
   skip_final_snapshot  = true
