@@ -32,15 +32,15 @@ mvn clean package
 
 ### 3. Build & Push Docker Image
 ```bash
-aws ecr create-repository --repository-name myapp
-$(aws ecr get-login --no-include-email)
+aws ecr create-repository --repository-name myapp --region <region-id>
+aws ecr get-login-password --region <region-id> | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region-id>.amazonaws.com
 docker build -t myapp .
 docker tag myapp:latest <account_id>.dkr.ecr.us-east-1.amazonaws.com/myapp:latest
 docker push <account_id>.dkr.ecr.us-east-1.amazonaws.com/myapp:latest
 ```
 
 ### 4. Deploy to EKS
-Update image in `k8s/deployment.yaml` and apply:
+Update image and account-id in `k8s/deployment.yaml` and apply:
 ```bash
 kubectl apply -f k8s/deployment.yaml
 ```
